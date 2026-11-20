@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<!-- V3.4 offline single-file bundle: no CDN or network assets required. -->
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="#06121c" name="theme-color">
+<meta content="近零碳高速公路服务区多能流协同优化三维数字孪生平台" name="description">
+<title>三维数字孪生场景</title>
+<link rel="stylesheet" href="twin.css?v=scene2"></head>
+<body>
+<div id="app">
+<header class="topbar glass-panel">
+<div class="brand">
+<div aria-hidden="true" class="brand-mark"><span></span><span></span><span></span></div>
+<div>
+<h1>近零碳服务区三维数字孪生平台</h1>
+<p>NEAR-ZERO-CARBON SERVICE AREA · DIGITAL TWIN V3.4</p>
+</div>
+</div>
+<div class="status-strip">
+<span class="live-dot"></span><span>系统在线</span>
+<span class="divider"></span>
+<span id="header-scenario">晴天正常运行</span>
+<span class="data-badge">演示数据</span>
+<strong id="header-time">12:00</strong>
+</div>
+</header>
+<aside aria-label="系统视图" class="sidebar left-panel glass-panel">
+<section>
+<p class="section-kicker">系统视图</p>
+<h2>系统视图</h2>
+<nav class="system-nav" id="system-nav">
+<button class="nav-item active" data-system="all"><i class="icon-grid"></i><span>全局协同</span></button>
+<button class="nav-item" data-system="electric"><i class="icon-bolt"></i><span>电力系统</span></button>
+<button class="nav-item" data-system="storage"><i class="icon-cell"></i><span>储能系统</span></button>
+<button class="nav-item" data-system="charging"><i class="icon-plug"></i><span>充电系统</span></button>
+<button class="nav-item" data-system="water"><i class="icon-drop"></i><span>水循环系统</span></button>
+<button class="nav-item" data-system="heat"><i class="icon-heat"></i><span>热能系统</span></button>
+</nav>
+</section>
+<section class="flow-legend">
+<p class="section-kicker">能流图例</p>
+<small class="flow-hint">场景能流指示</small>
+<div><span class="flow-line electric"></span>电力流 <b id="electric-flow-value">1.28 MW</b></div>
+<div><span class="flow-line water"></span>水资源 <b id="water-flow-value">52 m³/h</b></div>
+<div><span class="flow-line heat"></span>热能流 <b id="heat-flow-value">0.46 MW</b></div>
+</section>
+</aside>
+<main aria-label="三维数字孪生场景" id="viewport">
+<div id="webgl-container"></div>
+<div class="scene-vignette"></div><div class="scene-caption">
+<span id="view-label">全局协同视图</span>
+<small>左键选择设备 · 中键旋转 · 滚轮缩放 · 右键平移</small>
+</div>
+<div class="scene-tools glass-panel"><button aria-label="查看系统配置" id="mobile-panel-toggle" title="查看系统配置">配置</button>
+<button aria-label="返回全景" id="home-view" title="返回全景">全景</button>
+<button aria-label="俯视" id="top-view" title="俯视">俯视</button>
+<button aria-label="自动环绕" id="auto-rotate" title="自动环绕">环绕</button>
+<span></span>
+<button aria-label="显示或隐藏能流" class="active" id="toggle-flows" title="显示/隐藏能流">能流</button>
+<span></span>
+<button aria-label="切换自然晴天视觉预设" class="active" id="preset-natural" title="自然晴天">日景</button>
+<button aria-label="切换高质量展示视觉预设" id="preset-showcase" title="高质量展示">夜景</button>
+</div>
+<div class="loading" id="loading"><div class="loader-ring"></div><strong>构建数字孪生场景</strong><span>正在初始化 WebGL...</span></div>
+<div class="webgl-error" hidden="" id="webgl-error"><div class="webgl-fallback">
+<div class="fallback-kicker">系统结构示意</div>
+<h3>三维场景暂不可用</h3>
+<p>当前浏览器未能创建 WebGL 渲染环境。下方仍可查看服务区多能系统的主要关系；建议在支持 WebGL 的 Edge 或 Chrome 中打开三维场景。</p>
+<svg aria-label="光伏、电网、储能、服务区负荷、水循环和热能系统关系示意图" role="img" viewbox="0 0 820 330">
+<defs>
+<marker id="fbArrow" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="4"><path d="M0 0 L7 4 L0 8 Z" fill="#5B876A"></path></marker>
+</defs>
+<g fill="none" marker-end="url(#fbArrow)" stroke="#8AAE91" stroke-width="2.5">
+<path d="M160 72 H330 V150 H385"></path><path d="M160 158 H385"></path><path d="M160 244 H330 V166 H385"></path>
+<path d="M495 158 H650"></path><path d="M705 194 V248 H530"></path>
+<path d="M530 248 H385 V208"></path><path d="M530 248 H650 V290"></path>
+</g>
+<g fill="#fff" stroke="#D4E0D5" stroke-width="2">
+<rect height="60" rx="8" width="132" x="28" y="42"></rect><rect height="60" rx="8" width="132" x="28" y="128"></rect>
+<rect height="60" rx="8" width="132" x="28" y="214"></rect><rect fill="#EAF2E9" height="92" rx="9" stroke="#91B398" width="110" x="385" y="112"></rect>
+<rect height="68" rx="8" width="142" x="650" y="126"></rect><rect height="58" rx="8" width="145" x="385" y="248"></rect>
+<rect height="58" rx="8" width="142" x="650" y="248"></rect>
+</g>
+<g fill="#2C3E31" font-family="Microsoft YaHei,sans-serif" font-size="19" font-weight="700" text-anchor="middle">
+<text x="94" y="79">光伏</text><text x="94" y="165">储能</text><text x="94" y="251">外部电网</text>
+<text x="440" y="151">交流母线</text><text x="721" y="166">服务区负荷</text>
+<text x="457" y="283">水处理与回用</text><text x="721" y="283">污水余热供热</text>
+</g>
+<g fill="#758178" font-family="Microsoft YaHei,sans-serif" font-size="13" text-anchor="middle">
+<text x="440" y="178">统一协调</text><text x="457" y="323">调节池 · 中水回用</text><text x="721" y="323">热泵 · 备用锅炉</text>
+</g>
+</svg>
+</div></div>
+</main>
+<aside aria-label="核心设备配置" class="sidebar right-panel glass-panel">
+<div class="panel-heading">
+<div>
+<p class="section-kicker">设备配置</p>
+<h2 id="equipment-name">核心设备配置</h2>
+</div>
+<button aria-label="取消设备选择" class="close-selection" id="close-selection" title="取消选择">×</button>
+</div>
+<p class="equipment-description" id="equipment-description">项目优化方案的主要设备容量配置。点击三维设备可查看对应子系统参数。</p>
+<div class="metric-hero">
+<div>
+<span id="config-hero-label">光伏装机容量</span>
+<strong id="config-hero-value">1,382.04</strong>
+<small id="config-hero-unit">kWp</small>
+</div>
+<div class="config-stamp">方案<br>配置</div>
+</div>
+<div class="metric-grid" id="metric-grid">
+<div><span>储能容量</span><strong>1,955.11</strong><small>kWh</small></div>
+<div><span>储能功率</span><strong>320.59</strong><small>kW</small></div>
+<div><span>充电设施</span><strong>129.81</strong><small>kW</small></div>
+<div><span>PCC 等值接口</span><strong>250</strong><small>kVA</small></div>
+</div>
+<div class="chart-card">
+<div class="chart-header"><span>水热资源配置</span><span>方案参数</span></div>
+<div class="config-list" id="resource-list">
+<div><span>污水处理能力</span><strong>10.45 m³/h</strong></div>
+<div><span>水量调节池</span><strong>23.02 m³</strong></div>
+<div><span>污水源热泵</span><strong>80.27 kWth</strong></div>
+<div><span>备用尖峰锅炉</span><strong>257.50 kWth</strong></div>
+</div>
+</div>
+
+<div class="panel-source">优化方案冻结配置</div>
+</aside>
+<footer class="timeline-panel glass-panel">
+<button aria-label="播放或暂停" class="play-button" id="play-button">播放</button>
+<div class="time-readout"><strong id="timeline-time">12:00</strong><span id="timeline-date">场景时刻</span></div>
+<div class="timeline-main">
+<div class="timeline-labels"><span>04:00</span><span>10:00</span><span>16:00</span><span>22:00</span><span>次日 04:00</span></div>
+<input aria-label="24小时运行时间轴" id="timeline" max="95" min="0" step="1" type="range" value="32">
+<div class="timeline-events"><i style="left:14%"></i><i style="left:36%"></i><i style="left:64%"></i><i style="left:82%"></i></div>
+</div>
+<div class="timeline-controls">
+<span>15 分钟 / 步</span>
+<label>速度 <select aria-label="播放速度" id="speed-select"><option value="0.5">0.5×</option><option selected value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+<label>画质 <select aria-label="画质" id="quality-select"><option selected value="high">高画质</option><option value="standard">标准</option><option value="low">省电</option></select></label>
+</div>
+</footer>
+</div>
+<script src="twin-engine.js?v=scene2"></script>
+<script>
+(function(){
+  const toggle=document.getElementById("mobile-panel-toggle");
+  const panel=document.querySelector(".right-panel");
+  if(toggle&&panel) toggle.addEventListener("click",()=>panel.classList.toggle("mobile-open"));
+})();
+</script></body>
+</html>
